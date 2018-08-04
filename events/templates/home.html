@@ -1,0 +1,19 @@
+{% block content %}
+<h1>Tech Events !!</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+                {% for item in events %}
+                <p>{{item.status}}</p>
+                <p>{{item.name}}</p>
+                {{ item.venue.name }}
+                {{item.venue.address_1}}
+                <!-- <hr> -->
+                {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
