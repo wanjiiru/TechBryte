@@ -1,17 +1,33 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
 {% block content %}
 <h1>Tech Events !!</h1>
 <div class="container">
     <div class="row">
+            {% for item in results %}
         <div class="col-md-4">
-                {% for item in events %}
-                <p>{{item.status}}</p>
-                <p>{{item.name}}</p>
-                {{ item.venue.name }}
-                {{item.venue.address_1}}
-                <!-- <hr> -->
-                {% endfor %}
+            <div class="card-block">
+                    {{item.local_date}}
+                    <p>{{item.status}}</p>
+                    <p>{{item.name}}</p>
+                    {{ item.venue.name }}
+                    {{item.venue.address_1}}
+                <div class="card-block">
+                    <img src="{{item.photo_url}}">
+
+
+                </div>
+
+
+                   <small>{{item.group.name}}</small>
+                   <hr style="color: red;">
+
+
+            </div>
+
 
         </div>
+        {% endfor %}
     </div>
 
 </div>
