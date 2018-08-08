@@ -1,11 +1,15 @@
 from django.shortcuts import render
 import requests
-
+from . import requestdata
+from django.http import HttpResponse,JsonResponse
 # Create your views here.
+
+
+def logdata(request):
+    data = requestdata.alldata()
+    print(data)
+    return JsonResponse(data)
+
 def home(request):
-    response = requests.get('https://api.meetup.com/2/concierge?offset=0&format=json&category_id=34&photo-host=public&page=500&sig_id=260256764&sig=7756bc69902a8df71bf518082b25d3073a17daf2')
-    eventsdata = response.json()
-    data = eventsdata['results']
-    return render(request,'home.html', {
-        'results':data,
-    })
+    final = requestdata.alldata()
+    return render(request, 'home.html',{"data": final})
