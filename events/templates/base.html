@@ -1,49 +1,92 @@
-{% load bootstrap4 %}
-{% load static%}
 <!DOCTYPE html>
+{% load staticfiles %}
+{% load bootstrap4 %}
+
 <html>
-<head>
-  <meta charset="utf-8">
+    <head>
+        <title>Gig finder</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700i|Roboto:300,400,700|PT+Sans:400,400i,700,700i" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 
-  {% if title %}
-  <title>TechBryte| {{title}}</title>
-  {% else %}
-    <title> TechBryte! </title>
-  {% endif %}
+        <!-- Custom Theme files -->
+        <link href='//fonts.googleapis.com/css?family=Raleway:400,600,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{#        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">#}
+        <link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+        <style>
+            #mapid { height: 50vh; }
+        </style>
+    </head>
+    <body>
+        <h1>Gig Finder</h1>
+        <div class="container">
+            <div class="row">
+            {% include 'navbar.html' %}
 
-  {% block styles %}
-    {% bootstrap_css %}
-    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700i|Roboto:300,400,700|PT+Sans:400,400i,700,700i" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+                {% block content %}{% endblock %}
+            </div>
+         <div id="mapid"></div>
+        </div>
+        <script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
+        <script language="javascript" type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="{% static 'leaflet/leaflet.js' %}"></script>
+        <script src="{% static 'js/plugins/leaflet.ajax.min.js' %}"></script>
+         <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
-    <!-- Custom Theme files -->
-    <link href='//fonts.googleapis.com/css?family=Raleway:400,600,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
-  {% endblock %}
-
-
-</head>
-<body>
-   {% include "navbar.html" %}
-    {% block content %}
-
-
-
-    {%endblock%}
-
-
-    {% block scripts %}
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script>
+        var venues;
+        var mymap;
+        var venues;
+        var events;''
+        var ctrRouting;
+        var mypoint;
 
+        $(document).ready(function(){
+             mymap = L.map('mapid').setView([-1.3, 36.78], 5);
+                 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+              attribution: 'Tiles by openstreetmap'
+                }).addTo(mymap);
+
+            venues = L.geoJSON.ajax('http://127.0.0.1:8000/venues', {onEachFeature: function (feature, layer) {
+
+                  layer.bindPopup('<h1>'+feature.properties.name+'</h1>')
+                }
+            }
+            ).addTo(mymap);
+
+             events = L.geoJSON.ajax('http://127.0.0.1:8000/events', {onEachFeature: function (feature, layer) {
+
+                  layer.bindPopup('<h1>'+feature.properties.name+'</h1>')
+                }
+            }
+            ).addTo(mymap);
+
+
+
+
+
+           mymap.locate();
+           mymap.on('locationfound', function(e){
+               console.log(e.latlng)
+               ctrRouting = L.Routing.control({
+                  waypoints: [
+                    L.latLng(e.latlng.lat,e.latlng.lng),
+                    L.latLng(-1.34,36.8)
+                  ],
+                 router: L.Routing.mapbox('pk.eyJ1IjoiZGVyeSIsImEiOiJjaWY5anJyN3YwMDI5dGNseHoyZzM4Z3R4In0.dToOXYIZ30LH_7VtFbKW4A')
+                }).addTo(mymap);
+
+           })
+            mymap.on('locationerror', function(e){
+                alert('turn on your location!')
+           })
+            });
     </script>
-      {% bootstrap_javascript %}
-      <script src="{% static 'js/scripts.js' %}"></script>
-
-    {% endblock %}
-
-</body>
+    </body>
 </html>

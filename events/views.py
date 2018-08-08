@@ -7,7 +7,6 @@ from django.http import HttpResponse,JsonResponse
 
 def logdata(request):
     data = requestdata.alldata()
-    print(data)
     return JsonResponse(data)
 
 def home(request):
