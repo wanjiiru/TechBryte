@@ -1,13 +1,12 @@
 
 {%extends 'base.html'%}
 {% load static%}
+{% load staticfiles %}
 {% block content %}
+{% load bootstrap4 %}
 
-{{block.super}}
-
-
-<!-- Landing Page -->
-<div class="banner">
+{{ block.super }}
+    <div class="banner">
     <div class="cover">
         <div class="container image">
             <form class="form" role="search" action=" ">
@@ -25,25 +24,30 @@
 
 
 <div class="container wrap">
-    <!-- Looping through images -->
     <div class="row" id="final">
     {% for item in data.features %}
          <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3">
                  <div class="portfolio-wrap ">
                      <div class="portfolio-wrap hovereffect">
                          <a class="img-overlay" data-toggle="modal" data-target="#{{item.properties.id}}" style="width:100%">
+                             {% if item.properties.photo_url %}
                              <img src="{{item.properties.photo_url}}" href="" class="image" alt="Image" >
+                             {% else %}
+                         <img src="{% static 'images/no.jpeg' %}" href="" class="image" alt="Image" >
+                         {% endif %}
                              <div class="overlay">
                                  <h4>{{item.properties.name}}</h4>
                              </div>
                          </a>
+
+
                      </div>
                  </div>
              </div>
     {% empty %}
     </div>
     <div class="row">
-        <div class="col-sm-6 col-md-6 col-lg-6">
+        <div class="col-md-6">
             <img src="{% static 'images/sorry.png' %}" alt="" class="oops">
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6">
@@ -66,7 +70,11 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-9 col-lg-9">
-                                <a href=""><img id="img{{item.properties.id}}" src="{{item.properties.photo_url}}" class="img-thumbnail" alt="Image" style="width: 100vh"></a>
+                                {% if item.properties.photo_url %}
+                                <a href=""><img id="img{{item.properties.id}}" src="{{item.properties.photo_url}}" class="img-thumbnail" alt="Image" style="width: 100vh">
+                                 {% else %}
+                         <img src="{% static 'images/no.jpeg' %}" href="" class="image" alt="Image" >
+                         {% endif %}</a>
 
                             </div>
                             <div class="col-md-4">
@@ -90,5 +98,4 @@
         </div>
     {% endfor %}
 </div>
-
 {% endblock %}
