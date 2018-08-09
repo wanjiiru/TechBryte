@@ -60,7 +60,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="row">
+                    <div class="container">
+                        <div class="row text-center">
                             <div class="col-md-9 col-lg-9">
                                 {% if item.properties.photo_url %}
                                 <a href=""><img id="img{{item.properties.id}}" src="{{item.properties.photo_url}}" class="img-thumbnail" alt="Image" style="width: 100vh">
@@ -75,9 +76,12 @@
                                 <p>{{item.properties.time}}</p>
                                 <p> <i class="fa fa-map-marker-alt" style="font-size:30px;" aria-hidden="true"></i>{{item.properties.venue.address_1}}</p>
                             </div>
+                            <H5><a href="{{ item.properties.event_url }}">Register</a></H5>
+
+
                             <div>
                                 <h2 class="desc" style="color:#056b5b">{{item.properties.name}}</h2><hr>
-                                <a href="{{ event|google_calendarize}}">+ Add to Google Calendar</a>
+{#                                <a href="{{ event|google_calendarize}}">+ Add to Google Calendar</a>#}
 
                                 <p >{{item.properties.description}}</p>
                             </div>
@@ -85,6 +89,7 @@
                             <div>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
