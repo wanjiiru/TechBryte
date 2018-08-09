@@ -4,6 +4,9 @@ from . import requestdata
 from django.http import HttpResponse,JsonResponse
 from datetime import datetime
 
+
+
+
 def logdata(request):
     final = requestdata.alldata()
     for x in final["features"]:
@@ -21,3 +24,5 @@ def home(request):
         print(f_date)
         x.get("properties")["time"] = f_date
    return render(request, 'home.html',{"data": final})
+
+

@@ -1,5 +1,6 @@
 
 {%extends 'base.html'%}
+{% load event_tags %}
 {% load static%}
 {% load staticfiles %}
 {% block content %}
@@ -76,6 +77,7 @@
                             </div>
                             <div>
                                 <h2 class="desc" style="color:#056b5b">{{item.properties.name}}</h2><hr>
+                                <a href="{{ event|google_calendarize}}">+ Add to Google Calendar</a>
 
                                 <p >{{item.properties.description}}</p>
                             </div>
