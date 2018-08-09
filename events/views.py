@@ -2,13 +2,22 @@ from django.shortcuts import render
 import requests
 from . import requestdata
 from django.http import HttpResponse,JsonResponse
-# Create your views here.
-
+from datetime import datetime
 
 def logdata(request):
-    data = requestdata.alldata()
-    return JsonResponse(data)
+    final = requestdata.alldata()
+    for x in final["features"]:
+        w_date = x.get("properties").get("group")["created"]
+        f_date = datetime.fromtimestamp(int(w_date)/1e3)
+        print(f_date)
+        x.get("properties").get("group")["created"] = f_date
+    return JsonResponse(final,safe=False)
 
 def home(request):
-    final = requestdata.alldata()
-    return render(request, 'home.html',{"data": final})
+   final = requestdata.alldata()
+   for x in final["features"]:
+        w_date = x.get("properties").get("group")["created"]
+        f_date = datetime.fromtimestamp(int(w_date)/1e3)
+        print(f_date)
+        x.get("properties").get("group")["created"] = f_date
+   return render(request, 'home.html',{"data": final})

@@ -58,10 +58,8 @@
 
     <script>
         var mymap;
-        var venues;
         var events;''
         var ctrRouting;
-        var mypoint;
 
         $(document).ready(function(){
              mymap = L.map('mapid').setView([-1.3, 36.78], 5);
@@ -71,8 +69,12 @@
                 }).addTo(mymap);
 
              events = L.geoJSON.ajax('http://127.0.0.1:8000/events/', {onEachFeature: function (feature, layer) {
+                 var content = "<div>" +
+                         '<h6>'+feature.properties.name+'</h6>'+
+                         '<p>'+feature.properties.venue.address_1+'</p>'+
+                     "</div";
+                 return layer.bindPopup(content)
 
-                  layer.bindPopup('<h5>'+feature.properties.name+'</h5>')
                 }
             }
             ).addTo(mymap);

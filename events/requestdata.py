@@ -39,6 +39,7 @@ def alldata():
                     "visibility": x.get("visibility"),
                     "waitlist_count": x.get("waitlist_count"),
                     "created": x.get("created"),
+                    "time": x.get("time"),
                     "maybe_rsvp_count": x.get("maybe_rsvp_count"),
                     "description": x.get("description"),
                     "event_url": x.get("event_url"),
