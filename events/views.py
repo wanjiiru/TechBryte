@@ -7,17 +7,17 @@ from datetime import datetime
 def logdata(request):
     final = requestdata.alldata()
     for x in final["features"]:
-        w_date = x.get("properties").get("group")["created"]
-        f_date = datetime.fromtimestamp(int(w_date)/1e3)
-        print(f_date)
-        x.get("properties").get("group")["created"] = f_date
+        w_date = x.get("properties")["time"]
+        f_date = datetime.utcfromtimestamp(int(w_date)/1e3)
+        # print(f_date)
+        x.get("properties")["time"] = f_date
     return JsonResponse(final,safe=False)
 
 def home(request):
    final = requestdata.alldata()
    for x in final["features"]:
-        w_date = x.get("properties").get("group")["created"]
-        f_date = datetime.fromtimestamp(int(w_date)/1e3)
+        w_date = x.get("properties")["time"]
+        f_date = datetime.utcfromtimestamp(int(w_date)/1e3)
         print(f_date)
-        x.get("properties").get("group")["created"] = f_date
+        x.get("properties")["time"] = f_date
    return render(request, 'home.html',{"data": final})

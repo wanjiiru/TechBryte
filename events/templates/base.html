@@ -72,6 +72,7 @@
                  var content = "<div>" +
                          '<h6>'+feature.properties.name+'</h6>'+
                          '<p>'+feature.properties.venue.address_1+'</p>'+
+                         '<h6>'+feature.properties.time +'</h6>'+
                      "</div";
                  return layer.bindPopup(content)
 
@@ -94,7 +95,7 @@
                  router: L.Routing.mapbox('pk.eyJ1IjoiZGVyeSIsImEiOiJjaWY5anJyN3YwMDI5dGNseHoyZzM4Z3R4In0.dToOXYIZ30LH_7VtFbKW4A')
                 }).addTo(mymap);
 
-           })
+           });
             mymap.on('locationerror', function(e){
                 alert('turn on your location!')
            })
